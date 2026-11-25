@@ -182,7 +182,7 @@ export const RUNTIME_TEST_SUITES = {
     assert.deepEqual(replay, { ok: false, reason: "REPLAY_DETECTED" });
 
     const boundaryTimestamp = now - windowMs;
-    const boundary = processor.process {
+    const boundary = processor.process({
       eventId: "inclusive-window-boundary",
       timestampMs: boundaryTimestamp,
       payload: "body-d",
@@ -230,7 +230,7 @@ export const RUNTIME_TEST_SUITES = {
 
   B3_SEAT_LOCK_EXPIRY_MANAGER: async (createSeatManager) => {
     let now = 1_000;
-    const manager = createSeatManager({ seatIds, holdMs: 100, nowMs: () => now });
+    const manager = createSeatManager({ seatIds: ["A", "B"], holdMs: 100, nowMs: () => now });
 
     assert.deepEqual(manager.hold("missing", "user-1"), { ok: false, reason: "UNKNOWN_SEAT" });
     assert.equal(manager.status("missing"), "UNKNOWN");
@@ -354,7 +354,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     let baseFailed = false;
     let errMsg = "";
     try {
-      await RUNTIME_TEST_SUITEStask.id](task.BASE);
+      await RUNTIME_TEST_SUITES[task.id](task.BASE);
     } catch (e) {
       baseFailed = true;
       errMsg = e?.message || String(e);
